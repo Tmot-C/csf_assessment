@@ -14,10 +14,15 @@ import { RestaurantService } from './restaurant.service';
 
 
 const appRoutes: Routes = [{
-  //View 0
+  //View 1
   path: '',
   component: MenuComponent
-}
+},
+{
+  //View 2
+  path: 'food_order',
+  component: PlaceOrderComponent
+},
 ]
 
 @NgModule({

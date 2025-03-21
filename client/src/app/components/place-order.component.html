@@ -47,12 +47,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td> 1 </td>
-          <td> XXX </td>
-          <td> $10 </td>
-          <td> XXX </td>
-          <td> $10 </td>
+        <tr *ngFor="let item of orderItems; let i = index">
+          <td> {{ i + 1 }} </td>
+          <td> {{ item.name }} </td>
+          <td> ${{ item.price.toFixed(2) }} </td>
+          <td> {{ item.quantity }} </td>
+          <td> ${{ getItemSubtotal(item).toFixed(2) }}</td>
         </tr>
       </tbody>
       <tfoot>

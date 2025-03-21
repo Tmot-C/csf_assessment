@@ -34,11 +34,11 @@ public class MenuItem {
     }
 
     public float getPrice() {
-        return price;
+        return Math.round(price * 100.0f) / 100.0f; 
     }
 
     public void setPrice(float price) {
-        this.price = price;
+        this.price = Math.round(price * 100.0f) / 100.0f;
     }
 
     

@@ -26,14 +26,14 @@ public class RestaurantController {
 
   // TODO: Task 2.2
   // You may change the method's signature
-  @GetMapping(path="/menus")
+  @GetMapping(path="/menu")
   @ResponseBody
   public ResponseEntity<String> getMenus() {
-
+    System.out.println("check1");
     List<JsonObject> menus = restSvc.getMenu().stream()
     .map(Utils::menuToJson)
     .toList();
-    System.out.println("Success");
+    
     return ResponseEntity.ok(Json.createArrayBuilder(menus).build().toString());
   }
 

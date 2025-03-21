@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http"
 import { inject, Injectable } from "@angular/core"
-import { menuItem } from "./models"
+import { MenuItem } from "./models"
 import { Observable } from "rxjs"
 
 @Injectable()
@@ -10,8 +10,8 @@ export class RestaurantService{
   
   // TODO: Task 2.2
   // You change the method's signature but not the name
-  getMenu(): Observable<menuItem[]> {
-    return this.http.get<menuItem[]>('/api/menu')
+  getMenus(): Observable<MenuItem[]> {
+    return this.http.get<MenuItem[]>('/api/menu')
   }
   
   // TODO: Task 3.2

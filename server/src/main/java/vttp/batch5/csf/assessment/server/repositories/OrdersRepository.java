@@ -25,6 +25,7 @@ public class OrdersRepository {
   //  db.collection.find({})
   //
   public List<MenuItem> getMenu() {
+    System.out.println("check2");
     List<Document> documents = mongoTemplate.findAll(Document.class, "menus");
     List<MenuItem> menuItems = new ArrayList<>();
     for (Document doc : documents) {
