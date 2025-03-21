@@ -13,7 +13,7 @@ FROM openjdk:23 AS builder2
 
 WORKDIR /server
 
-COPY /client .
+COPY /server .
 
 COPY --from=builder1 /client/dist/client/browser /server/src/main/resources/static
 
