@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http"
 import { inject, Injectable } from "@angular/core"
-import { MenuItem } from "./models"
+import { MenuItem, Order } from "./models"
 import { Observable } from "rxjs"
 
 @Injectable()
@@ -15,4 +15,10 @@ export class RestaurantService{
   }
   
   // TODO: Task 3.2
+
+  placeOrder(order: Order) {
+    // TODO Task 3
+    return this.http.post<Order>('/api/food_order', order);
+  }
+
 }

@@ -4,26 +4,40 @@
   </div>
 </div>
 
-<form>
+<form [formGroup]="orderForm" (ngSubmit)="placeOrder()">
   <div class="row mb-2">
     <div class="col">
       <label for="username" class="form-label">Username</label>
-      <input type="text" id="username" class="form-control" placeholder="Registered username">
+      <input         
+        type="text" 
+        id="username" 
+        class="form-control"
+        placeholder="Registered username"
+        formControlName="username"
+      >
     </div>
   </div>
   <div class="row mb-2">
     <div class="col">
       <label for="password" class="form-label">Password</label>
-      <input type="password" id="password" class="form-control" placeholder="Valid password">
+      <input        
+        type="password" 
+        id="password" 
+        class="form-control"
+        placeholder="Valid password"
+        formControlName="password"
+      >
     </div>
   </div>
   <div class="row mb-5">
     <div class="col">
       <div class="d-flex justify-content-between">
-        <button type="button" class="btn btn-danger">
+        <button type="button" class="btn btn-danger" (click)="startOver()">
           Start Over
         </button>
-        <button type="submit" class="btn btn-primary">Confirm</button>
+        <button type="submit" class="btn btn-primary" [disabled]="orderForm.invalid">
+          Confirm
+        </button>
       </div>
     </div>
   </div>
@@ -48,17 +62,17 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of orderItems; let i = index">
-          <td> {{ i + 1 }} </td>
-          <td> {{ item.name }} </td>
-          <td> ${{ item.price.toFixed(2) }} </td>
-          <td> {{ item.quantity }} </td>
-          <td> ${{ getItemSubtotal(item).toFixed(2) }}</td>
+          <td>{{ i + 1 }}</td>
+          <td>{{ item.name }}</td>
+          <td>${{ item.price | number:'1.2-2'}}</td>
+          <td>{{ item.quantity }}</td>
+          <td>${{ getItemSubtotal(item) | number:'1.2-2'}}</td>
         </tr>
       </tbody>
       <tfoot>
         <tr>
           <td colspan="4"></td>
-          <td> $10 </td>
+          <td> ${{ getTotalPrice() | number:'1.2-2'}} </td>
         </tr>
       </tfoot>
 

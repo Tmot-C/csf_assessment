@@ -3,6 +3,7 @@ import { RestaurantService } from '../restaurant.service';
 import { map, Observable, Subscription, tap } from 'rxjs';
 import { MenuItem } from '../models';
 import { Router } from '@angular/router';
+import { MenuStore } from '../menu.store';
 
 @Component({
   selector: 'app-menu',
@@ -12,43 +13,46 @@ import { Router } from '@angular/router';
 })
 export class MenuComponent implements OnInit  {
 
+
   private rs = inject(RestaurantService);
   private router = inject(Router);
+  private menuStore = inject(MenuStore);
 
-  menus$!: Observable<MenuItem[]>
-  private menuItems: MenuItem[] = [];
-  private menuSubscription!: Subscription;
   
+  menus$ = this.menuStore.menuItems$;
+  private menuSubscription!: Subscription;
+
+
+  private cachedItems: MenuItem[] = [];
 
   itemQuantities: { [id: string]: number } = {};
   
   ngOnInit(): void {
-    // Get menu items and initialize quantity to 0 if undefined
-    this.menus$ = this.rs.getMenus().pipe(
-      map((items: MenuItem[]) => {
-        return items.map(item => {
-          return {
-            ...item,
-            quantity: item.quantity || 0 // Initialize to 0 if undefined
-          };
-        });
-      }),
+
+    this.menuSubscription = this.rs.getMenus().pipe(
+      map((items: MenuItem[]) =>
+        items.map(item => ({
+          ...item,
+          quantity: item.quantity || 0
+        }))
+      ),
       tap(items => {
-        this.menuItems = items;
+
+        this.menuStore.setMenuItems(items);
       })
-    );
-    
-    // Subscribe once to populate our local array
-    this.menuSubscription = this.menus$.subscribe();
+    ).subscribe();
+
+    this.menuStore.menuItems$.subscribe(items => {
+      this.cachedItems = items;
+    });
   }
 
   ngOnDestroy(): void {
-    // Clean up subscription when component is destroyed
+
     if (this.menuSubscription) {
       this.menuSubscription.unsubscribe();
     }
   }
-
 
   increaseQuantity(item: MenuItem): void {
     item.quantity = (item.quantity || 0) + 1;
@@ -59,38 +63,27 @@ export class MenuComponent implements OnInit  {
       item.quantity -= 1;
     }
   }
-  
-  // Calculate totals directly from menuItems array
+
   getTotalItems(): number {
-    return this.menuItems.reduce(
-      (sum, item) => sum + (item.quantity || 0), 
-      0
-    );
+    return this.cachedItems.reduce((sum, item) => sum + (item.quantity || 0), 0);
   }
   
   getTotalCost(): number {
-    return this.menuItems.reduce(
-      (sum, item) => sum + ((item.quantity || 0) * item.price), 
+    return this.cachedItems.reduce((sum, item) => 
+      sum + ((item.quantity || 0) * item.price), 
       0
     );
   }
 
   placeOrder(): void {
     // Filter items with quantity > 0
-    const orderedItems = this.menuItems.filter(
-      item => item.quantity && item.quantity > 0
-    );
+    const orderedItems = this.cachedItems.filter(item => (item.quantity || 0) > 0);
     
     if (orderedItems.length > 0) {
-      //https://angular.dev/api/router/NavigationExtras
-      this.router.navigate(['/food_order'], { 
-        state: { 
-          orderItems: orderedItems,
-          totalCost: this.getTotalCost(),
-          totalItems: this.getTotalItems()
-        } 
-      });
+      
+      this.router.navigate(['/food_order']);
     }
   }
+  
   
 }

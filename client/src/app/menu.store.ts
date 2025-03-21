@@ -21,10 +21,10 @@ export class MenuStore extends ComponentStore<MenuItemsState>{
     readonly menuItems$ = this.select(state => state.MenuItemsSlice);
     
     //Updaters
-    readonly addToCart = this.updater((state, menuItem: MenuItem) => ({
-        ...state, 
-        menuItemsSlice: [...state.MenuItemsSlice, menuItem]
-    }));
+    readonly setMenuItems = this.updater((state, menuItems: MenuItem[]) => ({
+        ...state,
+        MenuItemsSlice: menuItems
+      }));
 
 
 }

@@ -6,3 +6,15 @@ export interface MenuItem {
     price: number
     quantity: number
   }
+
+  export interface MenuItemMini {
+    id: string
+    price: number
+    quantity: number
+  }
+  
+  export interface Order {
+    username: string
+    password: string
+    items: MenuItemMini[];
+  }
