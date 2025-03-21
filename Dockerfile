@@ -15,7 +15,7 @@ WORKDIR /server
 
 COPY /client .
 
-COPY --from=builder1 /client/dist/browser /server/src/main/resources/static
+COPY --from=builder1 /client/dist/client/browser /server/src/main/resources/static
 
 RUN chmod a+x mvnw
 RUN ./mvnw install -DskipTests
