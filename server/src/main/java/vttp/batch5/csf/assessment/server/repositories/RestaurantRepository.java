@@ -19,6 +19,9 @@ public class RestaurantRepository {
 
     final String sql = "SELECT username, password FROM customers WHERE username = ?";
 
+    final String sql2 = "INSERT INTO payments " +
+    "(payment_id, order_id, username, total, timestamp, items) " +
+    "VALUES (?, ?, ?, ?, ?, ?)";
     public Optional<Customer> findByUsername(String username) {
 
         SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, username);
